@@ -19,6 +19,7 @@ public class ThirdPersonShooterController : MonoBehaviour {
 
     [SerializeField] private ThirdPersonController movespeed;
 
+    public CinemachineImpulseSource source;
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
     private Animator animator;
@@ -45,6 +46,15 @@ public class ThirdPersonShooterController : MonoBehaviour {
         if (starterAssetsInputs.aim) {
             if (starterAssetsInputs.shoot)
             {
+                if(Input.GetButtonDown("Fire1"))
+                {
+                    source.GenerateImpulse();
+                    Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
+                    Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
+                    //*/
+                    starterAssetsInputs.shoot = false;
+                }
+               
                 /*
                 // Hit Scan Shoot
                 if (hitTransform != null) {
@@ -60,16 +70,16 @@ public class ThirdPersonShooterController : MonoBehaviour {
                 //*/
                 //*
                 // Projectile Shoot
-                Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
-                Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
-                //*/
-                starterAssetsInputs.shoot = false;
+               
+                
+                
+                
             }
             aimVirtualCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
             thirdPersonController.SetRotateOnMove(false);
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 13f));
-
+       
             movespeed.MoveSpeed = 1;
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
